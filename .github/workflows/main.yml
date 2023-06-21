@@ -1,10 +1,10 @@
-name: Test and Deply
+name: Test and Deploy
 
 on:
   push:
     branches:
       - main
-      
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -29,33 +29,31 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-# run the unit tests but exclude the selenium tests.
+
       - name: Run unit tests
         run: npm run test:unit
-# run the cypress tests using cypress actions.
+
       - name: Start test server
         run: npm run start:test &
 
       - name: Run all Cypress tests on Chrome
+        id: cypress-chrome
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
           start: npm start
-#           record: true
-#         env:
-#           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
 
       - name: Run all Cypress tests on Edge
+        id: cypress-edge
         uses: cypress-io/github-action@v5
         with:
           browser: edge
           start: npm start
-#           record: true
-#         env:
-#           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
 
 
   deploy:
+    needs: build-and-test
+    if: needs.build-and-test.result == 'success'
     runs-on: ubuntu-latest
 
     steps:
