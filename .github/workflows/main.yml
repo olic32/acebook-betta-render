@@ -42,7 +42,7 @@ jobs:
         with:
           browser: chrome
           start: npm start
-          record: true
+#           record: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
 
@@ -52,7 +52,7 @@ jobs:
         with:
           browser: edge
           start: npm start
-          record: true
+#           record: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
 
